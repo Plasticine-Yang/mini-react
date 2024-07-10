@@ -1,10 +1,35 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import MiniReact from './mini-react'
 
-import App from './App.jsx'
+const root = document.querySelector('#root')
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+const Counter = (props) => {
+  const { className, children } = props
+
+  const [count, setCount] = MiniReact.useState(0)
+
+  console.log('render Counter', count);
+
+  const onClick = () => {
+    setCount(count + 1)
+  }
+
+  return MiniReact.createElement('div', { className, onClick }, [
+    `count: ${count}`,
+    MiniReact.createElement('div', {}, ['children: ', children]),
+  ])
+}
+
+MiniReact.render(
+  MiniReact.createElement('div', { id: 'foo' }, [
+    'Foo',
+    MiniReact.createElement('span', { className: 'bar' }, ['Bar']),
+    MiniReact.createElement(
+      Counter,
+      {
+        className: 'counter',
+      },
+      ['Counter Children'],
+    ),
+  ]),
+  root,
 )
